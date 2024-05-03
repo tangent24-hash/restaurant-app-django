@@ -102,7 +102,9 @@ class OrderViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        queryset = Order.objects.filter(user=self.request.user).order_by('-created_date')
+        return queryset
+
 
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -144,7 +146,6 @@ class OrderViewSet(ModelViewSet):
                     payment_intent = stripe.PaymentIntent.create(
                         amount=total_amount_in_cents,
                         currency='usd',
-                        cancel_after=timezone.now() + timedelta(minutes=30),  # Schedule cancellation
                         metadata={
                             'order_id': order.id,
                             'user': user

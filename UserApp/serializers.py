@@ -5,10 +5,11 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import UserAddress, MyUser
 from FoodApp.models import Cart
 
+
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = ('country', 'postal_code', 'address', 'is_default')
+        fields = ('id','country', 'postal_code', 'address', 'is_default')
 
     def validate(self, attrs):
         # Check if the user is authenticated
@@ -27,7 +28,7 @@ class UserAddressSerializer(serializers.ModelSerializer):
 class CustomRegisterSerializer(RegisterSerializer):
     fullname = serializers.CharField(max_length=64)
     mobile = serializers.CharField(max_length=16)
-    facebook_id = serializers.CharField( max_length=255)
+    facebook_id = serializers.CharField(max_length=255)
     date_of_birth = serializers.DateField()
 
     def save(self, request):
@@ -57,7 +58,6 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
 class UserDetailsSerializer(serializers.ModelSerializer):
     default_address = serializers.SerializerMethodField()
-
 
     class Meta:
         model = MyUser

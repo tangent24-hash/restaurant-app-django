@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
 from .models import FoodItem, FoodReview, Cart, CartItem, Order, OrderItem, STATUS_CHOICES
@@ -78,7 +77,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         else:
             return None  # Return None or a default image URL if no image is uploaded
 
-
     class Meta:
         model = CartItem
         fields = ('id', 'food', 'food_image', 'food_name', 'food_price', 'quantity')
@@ -103,6 +101,12 @@ class OrderSerializer(serializers.ModelSerializer):
         if value.user != user:
             raise serializers.ValidationError('Selected address does not belong to you.')
         return value
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if self.context.get('view') and self.context['view'].action != 'retrieve':
+            data.pop('order_items', None)  # Remove order_items if not 'retrieve' action
+        return data
 
     class Meta:
         model = Order
