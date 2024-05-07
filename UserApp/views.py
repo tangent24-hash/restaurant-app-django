@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from .serializers import UserAddressSerializer, UserDetailsSerializer, UserUpdateSerializer
 from .models import UserAddress, MyUser
-from rest_framework import permissions,generics
+from rest_framework import permissions, generics
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
@@ -20,7 +20,6 @@ class UserAddressView(ModelViewSet):
 
     def get_queryset(self):
         return UserAddress.objects.filter(user=self.request.user)
-
 
 
 class UserDetailView(generics.RetrieveUpdateAPIView):

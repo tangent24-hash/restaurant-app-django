@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from dj_rest_auth.serializers import UserDetailsSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .models import UserAddress, MyUser
 from FoodApp.models import Cart
@@ -9,7 +8,7 @@ from FoodApp.models import Cart
 class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
-        fields = ('id','country', 'postal_code', 'address', 'is_default')
+        fields = ('id', 'country', 'postal_code', 'address', 'is_default')
 
     def validate(self, attrs):
         # Check if the user is authenticated
@@ -44,34 +43,13 @@ class CustomRegisterSerializer(RegisterSerializer):
         return user
 
 
-class CustomUserDetailsSerializer(UserDetailsSerializer):
-    """
-    Custom serializer for retrieving user details with additional fields if needed.
-    """
-
-    # Add fields from your custom user model you want to expose in the API response
-
-    class Meta(UserDetailsSerializer.Meta):
-        model = MyUser  # Use your custom user model
-        fields = '__all__'
-
-
 class UserDetailsSerializer(serializers.ModelSerializer):
-    default_address = serializers.SerializerMethodField()
-
     class Meta:
         model = MyUser
-        fields = ('id', 'email', 'account_creation_date', 'last_login', 'is_active')  # Adjust fields as needed
-        # Exclude non-readable fields by default
-
-    def to_representation(self, instance):
-        """
-        Overriding to_representation to include only non-writable fields.
-        """
-        data = super().to_representation(instance)
-        # Exclude fields you don't want the user to see
-        del data['is_active']  # Example: Exclude non-readable fields
-        return data
+        fields = (
+            'id', 'email', 'fullname', 'profile_pic', 'bio', 'facebook_id', 'date_of_birth', 'account_creation_date',
+            'last_login')
+        readable_fields = ['account_creation_date']
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
@@ -81,7 +59,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MyUser
-        fields = ('email', 'fullname', 'mobile')  # Adjust editable fields
+        fields = (
+            'id', 'email', 'fullname', 'profile_pic', 'bio', 'facebook_id', 'date_of_birth')
 
     def update(self, instance, validated_data):
         """
@@ -91,5 +70,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         user.email = validated_data.get('email', user.email)
         user.fullname = validated_data.get('fullname', user.fullname)
         user.mobile = validated_data.get('mobile', user.mobile)
+        user.profile_pic = validated_data.get('profile_pic', user.profile_pic)
+        user.bio = validated_data.get('bio', user.bio)
+        user.facebook_id = validated_data.get('facebook_id', user.facebook_id)
+        user.date_of_birth = validated_data.get('date_of_birth', user.date_of_birth)
         user.save()
         return user

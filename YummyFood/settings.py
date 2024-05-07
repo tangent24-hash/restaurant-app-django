@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import stripe
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -122,7 +123,7 @@ REST_AUTH = {
     'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
 
     'REGISTER_SERIALIZER': 'UserApp.serializers.CustomRegisterSerializer',
-    'USER_DETAILS_SERIALIZER': 'UserApp.serializers.CustomUserDetailsSerializer',
+    'USER_DETAILS_SERIALIZER': 'UserApp.serializers.UserDetailsSerializer',
 
 }
 
@@ -167,8 +168,6 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/images/'
 MEDIA_ROOT = BASE_DIR
 
-
-
 #Payment
 STRIPE_SECRET_KEY = 'sk_test_51P8cxgP16DLtSbWAEyuQV44Q7v7UQU34tfU57TnpUAk3IA2yXnInhK6MtexOEqhRXDZzqbbbPtXSaOZ3PrG83d2N009qw36yEw'
 
@@ -176,5 +175,3 @@ STRIPE_SECRET_KEY = 'sk_test_51P8cxgP16DLtSbWAEyuQV44Q7v7UQU34tfU57TnpUAk3IA2yXn
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
