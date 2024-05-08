@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
-from .models import FoodItem, FoodReview, Cart, CartItem, Order, OrderItem, STATUS_CHOICES
+from .models import FoodItem, FoodReview, Cart, CartItem, Order, OrderItem, STATUS_CHOICES, Category
 from UserApp.models import MyUser, UserAddress
 from UserApp.serializers import UserAddressSerializer
 
@@ -135,3 +135,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
         fields = ('id', 'fullname', 'orders')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'

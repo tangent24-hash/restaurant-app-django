@@ -1,7 +1,6 @@
 from django.db import models
 from UserApp.models import MyUser, UserAddress
 
-
 STATUS_CHOICES = [
     ('pending', 'Pending'),
     ('processing', 'Processing'),
@@ -18,10 +17,23 @@ PAYMENT_CHOICES = [
     ('refunded', 'Payment is Refunded')
 ]
 
+
 # Create your models here.
 
 
+class Category(models.Model):
+    id = models.IntegerField()
+    name = models.CharField(max_length=255, verbose_name="Category", unique=True, primary_key=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+
 class FoodItem(models.Model):
+    category = models.ForeignKey(Category, related_name="foods", on_delete=models.CASCADE, null=True, blank=True, default="Snacks")
     name = models.CharField(max_length=255, verbose_name='Food Name')
     price = models.FloatField(max_length=128, verbose_name="Price")
     details = models.TextField(max_length=600, verbose_name="Description")
@@ -29,6 +41,9 @@ class FoodItem(models.Model):
     in_stock = models.IntegerField(verbose_name="In stock")
     sale_count = models.IntegerField(verbose_name="Sale Count", default=0, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 
 class FoodReview(models.Model):
@@ -39,15 +54,24 @@ class FoodReview(models.Model):
     review = models.TextField(max_length=600, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.foodname
+
 
 class Cart(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name="cart")
+
+    def __str__(self):
+        return self.user.fullname
 
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name="cart_items", on_delete=models.CASCADE)
     food = models.ForeignKey(FoodItem, related_name="food_items", on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.food.name
 
 
 class Order(models.Model):
@@ -58,11 +82,14 @@ class Order(models.Model):
     total_amount = models.FloatField(blank=True, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.user.fullname
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name="order_items", on_delete=models.CASCADE)
     food = models.ForeignKey(FoodItem, related_name="order_items", on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
-
-
+    def __str__(self):
+        return self.food.name

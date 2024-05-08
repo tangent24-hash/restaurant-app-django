@@ -48,8 +48,8 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         model = MyUser
         fields = (
             'id', 'email', 'fullname', 'profile_pic', 'bio', 'facebook_id', 'date_of_birth', 'account_creation_date',
-            'last_login')
-        readable_fields = ['account_creation_date']
+            'last_login', 'is_staff')
+        readable_fields = ['account_creation_date', 'is_staff']
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):

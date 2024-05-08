@@ -7,9 +7,9 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from .models import FoodItem, FoodReview, CartItem, Cart, OrderItem, Order
+from .models import FoodItem, FoodReview, CartItem, Cart, OrderItem, Order, Category
 from .serializers import FoodItemSerializer, FoodReviewSerializer, OrderItemSerializer, OrderSerializer, \
-    CartItemSerializer, CartSerializer
+    CartItemSerializer, CartSerializer, CategorySerializer
 from rest_framework import permissions, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -18,9 +18,15 @@ from YummyFood import settings
 
 
 class FoodItemView(ModelViewSet):
-    queryset = FoodItem.objects.all()
     serializer_class = FoodItemSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+
+    def get_queryset(self):
+        category = self.request.query_params.get('category')
+        if category:
+            return FoodItem.objects.filter(category=category)
+        else:
+            return FoodItem.objects.all()
 
 
 class FoodReviewViewSet(ModelViewSet):
@@ -97,14 +103,16 @@ class CartItemViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Order.objects.filter(user=self.request.user).order_by('-created_date')
-        return queryset
-
+        if self.request.user.is_staff or self.request.user.has_perm("myapp.editing_access"):
+            queryset = Order.objects.all().order_by('-created_date')
+            return queryset
+        else:
+            queryset = Order.objects.filter(user=self.request.user).order_by('-created_date')
+            return queryset
 
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -210,3 +218,9 @@ def webhook(request):
             return JsonResponse({'error': 'Order not found'}, status=404)
 
     return JsonResponse({'message': 'Webhook received'})
+
+
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly, permissions.IsAuthenticatedOrReadOnly]

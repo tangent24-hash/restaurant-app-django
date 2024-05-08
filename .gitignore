@@ -6,6 +6,7 @@
 # Ignore media files
 /media/
 images/
+profile_pics/
 # Ignore virtual environment
 /venv/
 
@@ -26,6 +27,8 @@ __pycache__/
 # Ignore local settings file
 /local_settings.py
 
+/FoodApp/migrations
+/UserApp/migrations
 
 # Ignore Docker files 
 Dockerfile
