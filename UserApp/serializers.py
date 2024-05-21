@@ -1,8 +1,12 @@
+from django.contrib.sites.shortcuts import get_current_site
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from dj_rest_auth.registration.serializers import RegisterSerializer
+from django.conf import settings
 from .models import UserAddress, MyUser
 from FoodApp.models import Cart
+from dj_rest_auth.serializers import PasswordResetSerializer
+from .forms import CustomPasswordResetForm
 
 
 class UserAddressSerializer(serializers.ModelSerializer):
@@ -76,3 +80,16 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         user.date_of_birth = validated_data.get('date_of_birth', user.date_of_birth)
         user.save()
         return user
+
+
+class CustomPasswordResetSerializer(PasswordResetSerializer):
+    @property
+    def password_reset_form_class(self):
+        return CustomPasswordResetForm
+
+    def get_email_options(self):
+        return {
+            "email_template": "account/email/password_reset_key",
+            "extra_email_context": {"site_name": 'Yummy Food'},
+        }
+

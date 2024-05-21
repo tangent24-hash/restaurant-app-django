@@ -11,16 +11,20 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import stripe
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ab*e)+e2)g+a-^htb8qot!k-b41@6c8%5(a=3=!_j=3mdwnoa)'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -115,24 +119,45 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Authentication
 AUTH_USER_MODEL = "UserApp.MyUser"
-#ACCOUNT_ADAPTER = 'UserApp.adapter.CustomAccountAdapter'
+ACCOUNT_ADAPTER = 'UserApp.adapter.CustomAccountAdapter'
 
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'my-auth',
     'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
-
+    'PASSWORD_RESET_SERIALIZER': 'UserApp.serializers.CustomPasswordResetSerializer',
     'REGISTER_SERIALIZER': 'UserApp.serializers.CustomRegisterSerializer',
     'USER_DETAILS_SERIALIZER': 'UserApp.serializers.UserDetailsSerializer',
-
 }
 
 # django allauth
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = False
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://your-frontend-domain.com/login'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://your-frontend-domain.com/login'
+
+# ACCOUNT_FORMS = {
+#     'reset_password': 'UserApp.forms.CustomPasswordResetForm',
+# }
+
+# Define your frontend URL
+FRONTEND_URL = os.environ.get('FRONTEND_URL')
+
+# Email Backend Configuration for Mailtrap
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -168,7 +193,7 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/images/'
 MEDIA_ROOT = BASE_DIR
 
-#Payment
+# Payment
 STRIPE_SECRET_KEY = 'sk_test_51P8cxgP16DLtSbWAEyuQV44Q7v7UQU34tfU57TnpUAk3IA2yXnInhK6MtexOEqhRXDZzqbbbPtXSaOZ3PrG83d2N009qw36yEw'
 
 # Default primary key field type

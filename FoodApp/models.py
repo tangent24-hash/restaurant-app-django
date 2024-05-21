@@ -22,7 +22,6 @@ PAYMENT_CHOICES = [
 
 
 class Category(models.Model):
-    id = models.IntegerField()
     name = models.CharField(max_length=255, verbose_name="Category", unique=True, primary_key=True)
 
     class Meta:
