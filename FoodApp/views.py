@@ -5,11 +5,11 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 from .models import FoodItem, FoodReview, CartItem, Cart, OrderItem, Order, Category
 from .serializers import FoodItemSerializer, FoodReviewSerializer, OrderItemSerializer, OrderSerializer, \
-    CartItemSerializer, CartSerializer, CategorySerializer
+    CartItemSerializer, CartSerializer, CategorySerializer, FoodItemSearchSerializer
 from rest_framework import permissions, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -224,3 +224,14 @@ class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly, permissions.IsAuthenticatedOrReadOnly]
+
+
+class FoodItemSearchView(ListAPIView):
+    serializer_class = FoodItemSearchSerializer
+
+    def get_queryset(self):
+        queryset = FoodItem.objects.all()
+        keyword = self.request.query_params.get('q', None)
+        if keyword:
+            queryset = queryset.filter(name__icontains=keyword)
+        return queryset

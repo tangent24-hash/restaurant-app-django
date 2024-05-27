@@ -194,7 +194,7 @@ MEDIA_URL = '/images/'
 MEDIA_ROOT = BASE_DIR
 
 # Payment
-STRIPE_SECRET_KEY = 'sk_test_51P8cxgP16DLtSbWAEyuQV44Q7v7UQU34tfU57TnpUAk3IA2yXnInhK6MtexOEqhRXDZzqbbbPtXSaOZ3PrG83d2N009qw36yEw'
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

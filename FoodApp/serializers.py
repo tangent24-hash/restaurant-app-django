@@ -141,3 +141,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class FoodItemSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodItem
+        fields = ('id', 'name', 'price', 'image')
