@@ -9,7 +9,7 @@ class FoodItemSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
 
     def get_rating(self, obj):
-        reviews = FoodReview.objects.filter(pk=obj.pk)
+        reviews = FoodReview.objects.filter(foodname=obj.pk)
         if reviews.exists():
             return sum(review.rating for review in reviews) / len(reviews)
         return 0.0
