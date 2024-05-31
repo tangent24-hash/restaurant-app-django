@@ -6,8 +6,8 @@
 # Ignore media files
 /media/
 images/
-profile_pics/
-# Ignore virtual environment
+/profile_pics/
+# Ignore virtuals environment
 /venv/
 
 # Ignore IDE files

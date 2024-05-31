@@ -41,6 +41,8 @@ class FoodItem(models.Model):
     sale_count = models.IntegerField(verbose_name="Sale Count", default=0, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-created_date']
     def __str__(self):
         return self.name
 
