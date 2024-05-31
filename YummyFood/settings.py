@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'YummyFood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'curiousbd1$default',
-        'USER': 'curiousbd1',
-        'PASSWORD': 'uriousSQL$',
-        'HOST': 'curiousbd1.mysql.pythonanywhere-services.com',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
     }
 }
 
