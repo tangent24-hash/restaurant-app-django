@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import cloudinary
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -145,7 +147,7 @@ FRONTEND_URL = os.getenv('FRONTEND_URL')
 
 # Email Backend Configuration for Mailtrap
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
@@ -192,8 +194,12 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv("CLOUD_NAME"),
     'API_KEY': os.getenv('API_KEY'),
-    'API_SECRET': os.getenv('API_SECRET')
+    'API_SECRET': os.getenv('API_SECRET'),
 }
+
+cloudinary.config(
+    api_proxy="http://proxy.server:3128"
+)
 
 # MEDIA
 
