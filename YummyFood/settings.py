@@ -168,12 +168,13 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Development environment
-    "https://production-domain.com",  # Production environment
+    "next-yummy-food.vercel.app",  # Production environment
     "*"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "next-yummy-food.vercel.app"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
