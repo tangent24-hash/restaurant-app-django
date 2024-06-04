@@ -120,7 +120,7 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'my-auth',
     'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
     'JWT_AUTH_SECURE': False,
-    'JWT_AUTH_SAMESITE': None,
+    'JWT_AUTH_SAMESITE': 'None',
 
     'PASSWORD_RESET_SERIALIZER': 'UserApp.serializers.CustomPasswordResetSerializer',
     'REGISTER_SERIALIZER': 'UserApp.serializers.CustomRegisterSerializer',
