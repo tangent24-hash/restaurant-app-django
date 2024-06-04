@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 import cloudinary
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -120,6 +119,9 @@ REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'my-auth',
     'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
+    'JWT_AUTH_SECURE': True,
+    'JWT_AUTH_SAMESITE': None,
+
     'PASSWORD_RESET_SERIALIZER': 'UserApp.serializers.CustomPasswordResetSerializer',
     'REGISTER_SERIALIZER': 'UserApp.serializers.CustomRegisterSerializer',
     'USER_DETAILS_SERIALIZER': 'UserApp.serializers.UserDetailsSerializer',
@@ -167,7 +169,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://production-domain.com",  # Production environment
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+
 CORS_ALLOW_CREDENTIALS = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
