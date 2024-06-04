@@ -164,9 +164,12 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 8,
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Development environment
     "https://production-domain.com",  # Production environment
+    "*"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
