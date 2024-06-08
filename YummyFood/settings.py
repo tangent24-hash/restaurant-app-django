@@ -121,7 +121,7 @@ REST_AUTH = {
     'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
     'JWT_AUTH_SECURE': True,
     'JWT_AUTH_SAMESITE': 'None',
-    'JWT_AUTH_HTTPONLY' : False,
+    'JWT_AUTH_HTTPONLY' : True,
     'PASSWORD_RESET_SERIALIZER': 'UserApp.serializers.CustomPasswordResetSerializer',
     'REGISTER_SERIALIZER': 'UserApp.serializers.CustomRegisterSerializer',
     'USER_DETAILS_SERIALIZER': 'UserApp.serializers.UserDetailsSerializer',
@@ -164,20 +164,22 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 8,
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Development environment
-    "next-yummy-food.vercel.app",  # Production environment
-    "*"
+    "http://127.0.0.1:3000/",  # Development environment
+    "https://next-yummy-food.vercel.app",  # Production environment
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "next-yummy-food.vercel.app"
+    "https://next-yummy-food.vercel.app"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_COOKIE_SECURE = True 
+CSRF_COOKIE_SAMESITE = 'None'
 
 
 # Internationalization
