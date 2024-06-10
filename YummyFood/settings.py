@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'cloudinary',
     'cloudinary_storage',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
+
 ]
 
 SITE_ID = 1
@@ -159,6 +162,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 8,
 }
@@ -166,7 +170,7 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Development environment
-    "http://127.0.0.1:3000/",  # Development environment
+    "http://127.0.0.1:3000",  # Development environment
     "https://next-yummy-food.vercel.app",  # Production environment
 ]
 
@@ -179,6 +183,21 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
+
+
+# drf-spectacular
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Yummy Food API',
+    'DESCRIPTION': 'API for Yummy Food App',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+
+}
 
 
 # Internationalization
