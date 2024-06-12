@@ -17,7 +17,8 @@ class UserAddressSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         # Check if the user is authenticated
         if not self.context.get('request').user.is_authenticated:
-            raise ValidationError('You must be logged in to create an address.')
+            raise ValidationError(
+                'You must be logged in to create an address.')
 
         # Automatically set the user field based on the authenticated user
         attrs['user'] = self.context.get('request').user
@@ -30,13 +31,14 @@ class UserAddressSerializer(serializers.ModelSerializer):
 
 class CustomRegisterSerializer(RegisterSerializer):
     fullname = serializers.CharField(max_length=64)
-    mobile = serializers.CharField(max_length=16)
-    facebook_id = serializers.CharField(max_length=255)
-    date_of_birth = serializers.DateField()
+    mobile = serializers.CharField(max_length=16, required=False)
+    facebook_id = serializers.CharField(max_length=255, required=False)
+    date_of_birth = serializers.DateField(required=False)
 
     def save(self, request):
         user = super().save(request)
-        user.fullname = self.validated_data['fullname']  # Set custom field value
+        # Set custom field value
+        user.fullname = self.validated_data['fullname']
         user.mobile = self.validated_data['mobile']
         user.facebook_id = self.validated_data['facebook_id']
         user.date_of_birth = self.validated_data['date_of_birth']
@@ -77,7 +79,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         user.profile_pic = validated_data.get('profile_pic', user.profile_pic)
         user.bio = validated_data.get('bio', user.bio)
         user.facebook_id = validated_data.get('facebook_id', user.facebook_id)
-        user.date_of_birth = validated_data.get('date_of_birth', user.date_of_birth)
+        user.date_of_birth = validated_data.get(
+            'date_of_birth', user.date_of_birth)
         user.save()
         return user
 
@@ -92,4 +95,3 @@ class CustomPasswordResetSerializer(PasswordResetSerializer):
             "email_template": "account/email/password_reset_key",
             "extra_email_context": {"site_name": 'Yummy Food'},
         }
-
